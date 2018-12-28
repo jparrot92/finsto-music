@@ -1,7 +1,9 @@
 <template lang="pug">
   #app
     fm-header
-    section.section
+
+    fm-loader(v-show="isLoading")
+    section.section(v-show="!isLoading")
       nav.nav.has-shadow
         .container
           .field.has-addons
@@ -16,23 +18,27 @@
         p.help.is-info.has-text-righ
           small {{searchMessage}}
       .container.results
-        .columns
-          .column(v-for="t in tracks") {{ t.name }} - {{ t.artists[0].name }}
+        .columns.is-multiline
+          .column.is-one-quarter(v-for="t in tracks")
+            fm-track(:track="t")
     fm-footer
 </template>
 
 <script>
-import trackService from './services/track'
-import FmFooter from './components/layout/Footer.vue'
-import FmHeader from './components/layout/Header.vue'
+import trackService from '@/services/track'
+import FmFooter from '@/components/layout/Footer.vue'
+import FmHeader from '@/components/layout/Header.vue'
+import FmTrack from '@/components/Track.vue'
+import FmLoader from '@/components/shared/Loader.vue'
 
 export default {
   name: 'app',
-  components: { FmFooter, FmHeader },
+  components: { FmFooter, FmHeader, FmTrack, FmLoader },
   data () {
     return {
       searchQuery: '',
-      tracks: []
+      tracks: [],
+      isLoading: false
     }
   },
   computed: {
@@ -47,9 +53,12 @@ export default {
         return
       }
 
+      this.isLoading = true
+
       trackService.search(this.searchQuery)
         .then(res => {
           this.tracks = res.tracks.items
+          this.isLoading = false
         })
     }
   }
