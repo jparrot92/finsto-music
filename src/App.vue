@@ -4,7 +4,7 @@
 
     fm-loader(v-show="isLoading")
     section.section(v-show="!isLoading")
-      nav.nav.has-shadow
+      nav.nav
         .container
           .field.has-addons
             input.input.is-large(
@@ -20,7 +20,11 @@
       .container.results
         .columns.is-multiline
           .column.is-one-quarter(v-for="t in tracks")
-            fm-track(:track="t")
+            fm-track(
+              :class="{ 'is-active': t.id === selectedTrack }",
+              :track="t",
+              @select="setSelectedTrack"
+            )
     fm-footer
 </template>
 
@@ -38,7 +42,8 @@ export default {
     return {
       searchQuery: '',
       tracks: [],
-      isLoading: false
+      isLoading: false,
+      selectedTrack: ''
     }
   },
   computed: {
@@ -60,6 +65,9 @@ export default {
           this.tracks = res.tracks.items
           this.isLoading = false
         })
+    },
+    setSelectedTrack (id) {
+      this.selectedTrack = id
     }
   }
 }
@@ -70,5 +78,9 @@ export default {
 
   .results{
     margin-top: 24px;
+  }
+
+  .is-active{
+    border: 3px #23d160 solid;
   }
 </style>
