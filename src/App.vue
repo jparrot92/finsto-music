@@ -1,5 +1,6 @@
 <template lang="pug">
   #app
+    fm-header
     section.section
       nav.nav.has-shadow
         .container
@@ -17,13 +18,17 @@
       .container.results
         .columns
           .column(v-for="t in tracks") {{ t.name }} - {{ t.artists[0].name }}
+    fm-footer
 </template>
 
 <script>
 import trackService from './services/track'
+import FmFooter from './components/layout/Footer.vue'
+import FmHeader from './components/layout/Header.vue'
 
 export default {
   name: 'app',
+  components: { FmFooter, FmHeader },
   data () {
     return {
       searchQuery: '',
