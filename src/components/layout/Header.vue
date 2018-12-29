@@ -11,4 +11,13 @@
       .container.has-text-centered
         h1.title Platzi Music
         h2.subtitle Canciones que están Vue-nísimas
+        fm-player
 </template>
+
+<script>
+import FmPlayer from '@/components/Player.vue'
+
+export default {
+  components: { FmPlayer }
+}
+</script>
