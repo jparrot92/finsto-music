@@ -2,6 +2,9 @@
   #app
     fm-header
 
+    fm-notification(v-show="showNotification")
+      p(slot="body") No se encontraron resultados
+
     fm-loader(v-show="isLoading")
     section.section(v-show="!isLoading")
       nav.nav
@@ -30,25 +33,39 @@
 
 <script>
 import trackService from '@/services/track'
+
 import FmFooter from '@/components/layout/Footer.vue'
 import FmHeader from '@/components/layout/Header.vue'
+
 import FmTrack from '@/components/Track.vue'
+
+import FmNotification from '@/components/shared/Notification.vue'
 import FmLoader from '@/components/shared/Loader.vue'
 
 export default {
   name: 'app',
-  components: { FmFooter, FmHeader, FmTrack, FmLoader },
+  components: { FmFooter, FmHeader, FmTrack, FmLoader, FmNotification },
   data () {
     return {
       searchQuery: '',
       tracks: [],
       isLoading: false,
+      showNotification: false,
       selectedTrack: ''
     }
   },
   computed: {
     searchMessage () {
       return `Encontrados: ${this.tracks.length}`
+    }
+  },
+  watch: {
+    showNotification () {
+      if (this.showNotification) {
+        setTimeout(() => {
+          this.showNotification = false
+        }, 3000)
+      }
     }
   },
   methods: {
@@ -62,6 +79,7 @@ export default {
 
       trackService.search(this.searchQuery)
         .then(res => {
+          this.showNotification = res.tracks.total === 0
           this.tracks = res.tracks.items
           this.isLoading = false
         })
