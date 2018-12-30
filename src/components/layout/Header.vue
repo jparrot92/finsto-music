@@ -1,16 +1,27 @@
 <template lang="pug">
   section.hero.is-success
+    // Hero head: will stick at the top
     .hero-head
-      header.navbar
+      nav.navbar
         .container
-          .navbar-start
-              .navbar-item
-                strong 📻 Platzi Music
-          .navbar-end.navbar-menu
+          .navbar-brand
+            .navbar-item
+              strong 📻 Platzi Music
+            span.navbar-burger.burger(data-target='navbarMenuHeroA')
+              span
+              span
+              span
+          #navbarMenuHeroA.navbar-menu
+            .navbar-end
+              router-link.navbar-item(:to="{ name: 'search' }") Buscar
+              router-link.navbar-item(to="about") Nosotros
+    // Hero content: will be in the middle
     .hero-body
       .container.has-text-centered
-        h1.title Platzi Music
-        h2.subtitle Canciones que están Vue-nísimas
+        h1.title
+          | Platzi Music
+        h2.subtitle
+          | Canciones que están Vue-nísimas
         fm-player
 </template>
 
