@@ -1,9 +1,12 @@
 <template lang="pug">
   main
-    fm-notification(v-show="showNotification")
-      p(slot="body") No se encontraron resultados
+    transition(name="move")
+      fm-notification(v-show="showNotification")
+        p(slot="body") No se encontraron resultados
 
-    fm-loader(v-show="isLoading")
+    transition(name="move")
+      fm-loader(v-show="isLoading")
+
     section.section(v-show="!isLoading")
       nav.nav
         .container
